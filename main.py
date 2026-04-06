@@ -8,11 +8,22 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}\nScreen height: {SCREEN_HEIGHT}")
     #Initialize pygame
     pygame.init()
+    
     #Use display.set_mode function from pygame to get a new instance of GUI window
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    
     #Create a clock object.
     clock = pygame.time.Clock()
     dt = 0
+
+    #Groups to cleanly update and draw multiple things at once.
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    #Player is the name of the class, not an instance of it.
+    #This must be done before any Player objects are created.
+    #This should add all future instances of a Player to two different groups (updateable and drawable)
+    Player.containers = (updatable, drawable)
 
     #Instantiate a player
     player = Player((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2))
@@ -26,12 +37,14 @@ def main():
             #If it was, then actually quit the game.
             if event.type == pygame.QUIT:
                 return
-        #Update the player object.
-        player.update(dt)
+        #Update the everything in the updatable group.
+        updatable.update(dt)
+        
         #Filling the screen with solid black. This will be the background.
         screen.fill("black")
-        #Draw Player
-        player.draw(screen)
+        #Loop over every member of drawable and .draw() them individually.
+        for member in drawable:
+            member.draw(screen)
         #Pause the game loop until 1/60th of a second has passed.
         #Also, storing the amount of time that has passed since the last time .tick() was called in dt (delta time).
         #Dividing by 1000 to convert from milliseconds to seconds.
