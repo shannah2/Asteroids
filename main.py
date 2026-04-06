@@ -1,5 +1,7 @@
 import pygame
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from logger import log_state
 
@@ -19,14 +21,22 @@ def main():
     #Groups to cleanly update and draw multiple things at once.
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     #Player is the name of the class, not an instance of it.
     #This must be done before any Player objects are created.
     #This should add all future instances of a Player to two different groups (updateable and drawable)
     Player.containers = (updatable, drawable)
 
+    Asteroid.containers = (asteroids, updatable, drawable)
+
+    AsteroidField.containers = (updatable)
+
     #Instantiate a player
     player = Player((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2))
+
+    asteroid_field = AsteroidField()
+
     #Infinite while loop for the game loop
     while True:
         #Log stuff for boot.dev
