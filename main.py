@@ -63,6 +63,14 @@ def main():
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
+            #Looping over each shot to check if it has collided with the asteroid
+            #Destroy bothe objects if it has.
+            for shot in shots:
+                if asteroid.collides_with(shot):
+                    log_event("asteroid_shot")
+                    asteroid.kill()
+                    shot.kill()
+            
 
         #Filling the screen with solid black. This will be the background.
         screen.fill("black")
