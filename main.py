@@ -26,6 +26,8 @@ def main():
             #If it was, then actually quit the game.
             if event.type == pygame.QUIT:
                 return
+        #Update the player object.
+        player.update(dt)
         #Filling the screen with solid black. This will be the background.
         screen.fill("black")
         #Draw Player
