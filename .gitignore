@@ -10,3 +10,4 @@ wheels/
 .venv
 
 #Misc.
+game_events.jsonl

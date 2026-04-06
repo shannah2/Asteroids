@@ -1,9 +1,10 @@
 import pygame
+import sys
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
-from logger import log_state
+from logger import log_state, log_event
 
 def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
@@ -47,18 +48,29 @@ def main():
             #If it was, then actually quit the game.
             if event.type == pygame.QUIT:
                 return
+        
         #Update the everything in the updatable group.
         updatable.update(dt)
         
+        #Check to see if any asteroids collide with the player.
+        #If collision occurred, Game over!
+        for asteroid in asteroids:
+            if asteroid.collides_with(player):
+                log_event("player_hit")
+                print("Game over!")
+                sys.exit()
+
         #Filling the screen with solid black. This will be the background.
         screen.fill("black")
         #Loop over every member of drawable and .draw() them individually.
         for member in drawable:
             member.draw(screen)
+        
         #Pause the game loop until 1/60th of a second has passed.
         #Also, storing the amount of time that has passed since the last time .tick() was called in dt (delta time).
         #Dividing by 1000 to convert from milliseconds to seconds.
         dt = (clock.tick(60))/1000
+        
         #Refreshes the screen. This must be called last!
         pygame.display.flip()
 
