@@ -26,7 +26,6 @@ def main():
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
-    score_board = pygame.sprite.Group()
 
     #Player is the name of the class, not an instance of it.
     #This must be done before any Player objects are created.
@@ -39,13 +38,13 @@ def main():
 
     Shot.containers = (shots, updatable, drawable)
 
-    Score.Containers = (updatable)
+    Score.containers = (drawable)
 
     #Instantiate a player
     player = Player((SCREEN_WIDTH/2), (SCREEN_HEIGHT/2))
 
     #Instantiate the score, so we can keep track. Potentially could be stored in Player.
-    #May be better to do in its own class so we can try to draw it on screen cleaner later.
+    #May be better to do in its own class so we can try to draw it on screen cleaner.
     score = Score()
 
     #Instantiate the AsteroidField. This handles creating asteroids, so we don't need to instantiate those.
@@ -78,6 +77,8 @@ def main():
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
                     points = asteroid.split()
+                    #Manually calling update here since we only need to update if the player destroyed an asteroid.
+                    #We don't need to update with every loop of the game.
                     score.update(points)
                     print(f"{score.score}")
                     shot.kill()
