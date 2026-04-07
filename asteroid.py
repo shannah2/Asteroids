@@ -1,7 +1,7 @@
 import pygame
 import random
 from circleshape import CircleShape
-from constants import LINE_WIDTH, ASTEROID_MIN_RADIUS
+from constants import LINE_WIDTH, ASTEROID_MIN_RADIUS, ASTEROID_POINT_VALUE
 from logger import log_event
 
 class Asteroid(CircleShape):
@@ -18,7 +18,7 @@ class Asteroid(CircleShape):
         self.kill()
         #If the asteroid was the minimum size or less, return, nothing left to do.
         if self.radius <= ASTEROID_MIN_RADIUS:
-            return
+            return ASTEROID_POINT_VALUE - self.radius
         #If it wasn't the minimum size then we need to create new asteroids.
         log_event("asteroid_split")
         #Random angle for the new asteroids to fly out from.
@@ -36,3 +36,6 @@ class Asteroid(CircleShape):
         #Set new velocity to be faster
         asteroid1.velocity = new_vector1 * 1.2
         asteroid2.velocity = new_vector2 * 1.2
+
+        return ASTEROID_POINT_VALUE - self.radius
+        
